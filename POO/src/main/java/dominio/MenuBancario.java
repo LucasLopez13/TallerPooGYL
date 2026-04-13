@@ -136,7 +136,7 @@ public class MenuBancario {
         var balanceTotal = 0.0;
         for (Cuenta cuenta : banco.getCuentas()) {
             balanceTotal += cuenta.getSaldo();
-            System.out.println("El balance total de todas las cuentas es" + ": $" + balanceTotal);
         }
+        System.out.println("El balance total de todas las cuentas es" + ": $" + balanceTotal);
     }
 }

@@ -25,7 +25,8 @@ public class Cuenta {
     }
 
     public void restarSaldo(double monto) {
-        Math.max(0.0,this.saldo - monto);
+
+        Math.max(0.0,this.saldo = this.saldo - monto);
     }
 
     public String getNombre() {
