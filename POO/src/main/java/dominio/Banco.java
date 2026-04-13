@@ -5,25 +5,32 @@ import java.util.List;
 
 public class Banco {
     // Lista de cuentas
-    private List<Cuenta> cuentas = new ArrayList<>();
+    private List<Sucursal> sucursales = new ArrayList<>();
 
-    //Registrar una nueva cuenta / sin validaciones
-    public void registrarCuenta(Cuenta cuenta) {
-        cuentas.add(cuenta);
+    public Banco() {
+        sucursales.add(new Sucursal("Sucursal Boedo"));
+        sucursales.add(new Sucursal("Sucursal Caballito"));
+        sucursales.add(new Sucursal("Sucursal Once"));
     }
 
     //Buscar una cuenta por su email
-    public Cuenta buscarPorEmail(String email) {
-        for (Cuenta cuenta : cuentas) {
-            if (cuenta.getEmail().equalsIgnoreCase(email)) {
-                return cuenta;
-            }
+    public Cuenta buscarPorEmailEnSucursales(String email) {
+        for (Sucursal sucursal : sucursales) {
+            sucursal.buscarPorEmail(email);
         }
         return null;
     }
 
+    public double consultarSaldoTotalDelBanco() {
+        double saldoTotal = 0;
+        for (Sucursal sucursal : sucursales) {
+            saldoTotal += sucursal.consultarSaldoTotal();
+        }
+        return saldoTotal;
+    }
+
     //Getter de las cuentas
-    public List<Cuenta> getCuentas() {
-        return cuentas;
+    public List<Sucursal> getSucursales() {
+        return sucursales;
     }
 }
