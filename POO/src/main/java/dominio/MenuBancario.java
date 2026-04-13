@@ -29,7 +29,8 @@ public class MenuBancario {
             System.out.println("3. Retirar");
             System.out.println("4. Transferir");
             System.out.println("5. Consultar Balance");
-            System.out.println("6. Salir");
+            System.out.println("6. Consultar Balance Total");
+            System.out.println("7. Salir");
             System.out.print("Opción: ");
 
             int opcion = scanner.nextInt();
