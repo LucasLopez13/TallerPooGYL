@@ -91,7 +91,8 @@ public class MenuBancario {
         if (tipoOpcion == 3) tipo = TipoDeCuenta.SUELDO;
 
         CuentaBuilder builder = new CuentaBuilder();
-        Cuenta nuevaCuenta = builder.conNombre(nombre)
+        Cuenta nuevaCuenta = builder
+                .conNombre(nombre)
                 .conEdad(edad)
                 .conEmail(email)
                 .conDireccion(direccion)
