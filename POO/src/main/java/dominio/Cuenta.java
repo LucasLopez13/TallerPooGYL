@@ -32,7 +32,7 @@ public class Cuenta {
         Math.max(0.0,this.saldo = this.saldo - monto);
     }
 
-    public boolean esContraseñaCorrecta(String password) {
+    public boolean validarPassword(String password) {
         return this.password.equals(password);
     }
 
@@ -46,5 +46,9 @@ public class Cuenta {
 
     public double getSaldo() {
         return saldo;
+    }
+
+    public Sucursal getSucursal() {
+        return sucursal;
     }
 }

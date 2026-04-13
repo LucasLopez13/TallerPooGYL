@@ -31,7 +31,6 @@ public class Sucursal {
                 return cuenta;
             }
         }
-        System.out.println("Cuenta no encontrada.");
         return null;
     }
 

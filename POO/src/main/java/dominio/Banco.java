@@ -16,7 +16,10 @@ public class Banco {
     //Buscar una cuenta por su email
     public Cuenta buscarPorEmailEnSucursales(String email) {
         for (Sucursal sucursal : sucursales) {
-            sucursal.buscarPorEmail(email);
+            var cuentaEncontrada = sucursal.buscarPorEmail(email);
+            if (cuentaEncontrada != null) {
+                return cuentaEncontrada;
+            }
         }
         return null;
     }
