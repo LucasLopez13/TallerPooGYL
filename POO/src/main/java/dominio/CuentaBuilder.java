@@ -8,6 +8,7 @@ public class CuentaBuilder {
     private TipoDeCuenta tipoDeCuenta;
     private double saldo;
 
+    //Patron de diseño Builder para crear nueva cuenta
     public CuentaBuilder conNombre(String nombre) { this.nombre = nombre; return this; }
     public CuentaBuilder conEdad(int edad) { this.edad = edad; return this; }
     public CuentaBuilder conEmail(String email) { this.email = email; return this; }
