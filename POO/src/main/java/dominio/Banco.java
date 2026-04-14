@@ -8,13 +8,13 @@ public class Banco {
     private List<Sucursal> sucursales = new ArrayList<>();
 
     public Banco() {
-        Sucursal boedo = new Sucursal("Sucursal Boedo");
-        Sucursal caballito = new Sucursal("Sucursal Caballito");
-        Sucursal once = new Sucursal("Sucursal Once");
+        Sucursal boedo = new Sucursal("Sucursal Boedo","adminboedo","1234");
+        Sucursal caballito = new Sucursal("Sucursal Caballito","admincaballito","1234");
+        Sucursal once = new Sucursal("Sucursal Once","adminonce","1234");
 
         sucursales.add(boedo);
         sucursales.add(caballito);
-        sucursales.add(caballito);
+        sucursales.add(once);
 
         cargarDatosEnSucursales(boedo,caballito,once);
     }

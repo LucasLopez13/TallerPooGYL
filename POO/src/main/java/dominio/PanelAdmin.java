@@ -17,7 +17,7 @@ public class PanelAdmin {
         while (!salirAdmin) {
             System.out.println("\n---PANEL DE ADMINISTRADOR---");
             System.out.println("1. Ver usuarios por Sucursal");
-            System.out.println("2. Dar de baja una cuenta");
+            System.out.println("2. Gestionar solicitudes de BAJA de Cuenta");
             System.out.println("3. Consultar Balance Total del Banco");
             System.out.println("4. Volver al Menú Principal");
             System.out.print("Opción: ");
@@ -27,7 +27,7 @@ public class PanelAdmin {
 
             switch (opcion) {
                 case 1 -> listarUsuariosPorSucursal();
-                case 2 -> eliminarCuenta();
+                case 2 -> gestionarSolicitudesDeBaja();
                 case 3 -> mostrarBalanceTotal();
                 case 4 -> salirAdmin = true;
                 default -> System.out.println("Opción no válida.");
@@ -58,6 +58,35 @@ public class PanelAdmin {
         } else {
             System.out.println("Sucursal no válida.");
         }
+    }
+
+    private void gestionarSolicitudesDeBaja() {
+        System.out.println("Cuentas que solicitacion la baja: ");
+        boolean haySolicitudes = false;
+        for (Sucursal sucursal : banco.getSucursales()) {
+            for (Cuenta cuenta : sucursal.getCuentas()) {
+                if (cuenta.isSolicitoBaja()) {
+                    haySolicitudes = true;
+                    System.out.println(cuenta.getEmail() + " | " + cuenta.getNombre());
+                }
+            }
+        }
+        if (!haySolicitudes) {
+            System.out.println("No hay solicitudes de baja pendientes.");
+            return;
+        }
+
+        System.out.println("Ingrese el email de la cuenta para confirmar la baja:");
+        var email = scanner.nextLine();
+        if (!email.isEmpty()) {
+            Cuenta cuentaAEliminar = banco.buscarPorEmailEnSucursales(email);
+            if (cuentaAEliminar != null && cuentaAEliminar.isSolicitoBaja()) {
+                cuentaAEliminar.getSucursal().eliminarCuenta(cuentaAEliminar);
+            } else {
+                System.out.println("La cuenta no existe o no se ha solicitado baja.");
+            }
+        }
+
     }
 
     private void eliminarCuenta() {

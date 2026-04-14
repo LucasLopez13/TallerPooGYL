@@ -10,6 +10,7 @@ public class Cuenta {
     private TipoDeCuenta tipoDeCuenta;
     private double saldo;
     private Sucursal sucursal;
+    private boolean solicitoBaja;
 
     public Cuenta(String nombre, int edad, String email, String password, String direccion, TipoDeCuenta tipoDeCuenta, Sucursal sucursal) {
         this.nombre = nombre;
@@ -21,6 +22,7 @@ public class Cuenta {
         this.sucursal = sucursal;
         //Toda cuenta nueva tiene un saldo inicial de 0
         this.saldo = 0;
+        this.solicitoBaja = false;
     }
 
     //Metodos que van a usar segun la estrategia que se elija
@@ -50,5 +52,13 @@ public class Cuenta {
 
     public Sucursal getSucursal() {
         return sucursal;
+    }
+
+    public void solicitarBaja() {
+        this.solicitoBaja = true;
+    }
+
+    public boolean isSolicitoBaja() {
+        return solicitoBaja;
     }
 }

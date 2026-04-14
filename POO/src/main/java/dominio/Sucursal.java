@@ -5,10 +5,14 @@ import java.util.List;
 
 public class Sucursal {
     private String nombre;
+    private String adminUser;
+    private String adminPassword;
     private List<Cuenta> cuentas = new ArrayList<>();
 
-    public Sucursal(String nombre) {
+    public Sucursal(String nombre, String adminUser, String adminPassword) {
         this.nombre = nombre;
+        this.adminUser = adminUser;
+        this.adminPassword = adminPassword;
     }
 
     public void registrarCuenta(Cuenta cuenta) {

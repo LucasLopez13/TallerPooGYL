@@ -65,7 +65,7 @@ public class MenuBancario {
 
         Cuenta cuenta = banco.buscarPorEmailEnSucursales(email);
 
-        if (cuenta != null && cuenta.validarPassword(password)) {
+        if (cuenta != null && cuenta.validarPassword(password) && !cuenta.isSolicitoBaja()) {
             System.out.println("¡Bienvenido/a " + cuenta.getNombre() + "!");
             menuOperacionesUsuario(cuenta);
         } else {
@@ -81,7 +81,8 @@ public class MenuBancario {
             System.out.println("2. Retirar");
             System.out.println("3. Transferir");
             System.out.println("4. Consultar mi balance");
-            System.out.println("5. Cerrar Sesión");
+            System.out.println("5. Solicitar BAJA de mi cuenta");
+            System.out.println("6. Cerrar Sesión");
             System.out.print("Opción: ");
 
             int opcion = scanner.nextInt();
@@ -104,6 +105,12 @@ public class MenuBancario {
                     System.out.println("Su saldo actual es: $" + cuentaUsuario.getSaldo());
                     break;
                 case 5:
+                    cuentaUsuario.solicitarBaja();
+                    System.out.println("Solicitud de baja enviada. Espere la respuesta del administrador.");
+                    System.out.println("Por su seguridad, se cerrara la sesion");
+                    cerrarSesion = true;
+                    break;
+                case 6:
                     cerrarSesion = true;
                     System.out.println("Sesión cerrada.");
                     break;
@@ -135,9 +142,25 @@ public class MenuBancario {
         System.out.print("Nombre: ");
         String nombre = scanner.nextLine();
 
-        System.out.print("Edad: ");
-        int edad = scanner.nextInt();
-        scanner.nextLine();
+        int edad = 0;
+        var esEdadValida = false;
+
+        while (!esEdadValida) {
+            System.out.print("Edad: ");
+            String inputEdad = scanner.nextLine();
+
+            try {
+                edad = Integer.parseInt(inputEdad);
+
+                if (edad > 0) {
+                    esEdadValida = true;
+                } else {
+                    System.out.println("Debe ingresar una edad válida.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Ingrese una edad válida");
+            }
+        }
 
         System.out.print("Email: ");
         String email = scanner.nextLine();
