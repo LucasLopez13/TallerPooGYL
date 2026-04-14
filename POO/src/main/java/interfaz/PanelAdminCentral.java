@@ -18,7 +18,7 @@ public class PanelAdminCentral extends PanelBase {
     protected void configurarOpciones() {
         menu.agregarOpcion(1, "Auditoria de sucursales y balances", () -> banco.mostrarAuditoriaGlobal() );
         menu.agregarOpcion(2, "Ver todas las cuentas", () -> listarTodoElSistema());
-        menu.agregarOpcion(3, "Ver balance general del banco", () -> System.out.println("Balance TOTAL de la sucursal: $" + banco.consultarSaldoTotalDelBanco()));
+        menu.agregarOpcion(3, "Ver balance general del banco", () -> System.out.println("Balance TOTAL del banco: $" + banco.consultarSaldoTotalDelBanco()));
         menu.agregarOpcionSalir(4, "Salir");
 
     }

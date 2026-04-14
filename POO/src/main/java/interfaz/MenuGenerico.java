@@ -42,8 +42,14 @@ public class MenuGenerico {
                 System.out.println(entry.getKey() + "." + entry.getValue().getDescripcion());
             }
             System.out.print("\nSeleccione una opcion: ");
-            int seleccion = scanner.nextInt();
-            scanner.nextLine();
+            String input = scanner.nextLine();
+            int seleccion = -1;
+
+            try {
+                seleccion = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Ingrese un numero valido.");
+            }
 
             OpcionMenu opcionSeleccionada = opciones.get(seleccion);
             if (opcionSeleccionada != null) {

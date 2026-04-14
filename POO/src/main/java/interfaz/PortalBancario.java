@@ -89,9 +89,24 @@ public class PortalBancario {
             }
         }
 
-        System.out.print("Ingrese el monto: $");
-        double monto = scanner.nextDouble();
+        double monto = 0;
+        boolean esMontoValido = false;
+        while (!esMontoValido) {
+            System.out.print("Ingrese el monto: ");
+            String inputMonto = scanner.nextLine();
 
+            try {
+                monto = Double.parseDouble(inputMonto);
+                if (monto > 0) {
+                    esMontoValido = true;
+                } else {
+                    System.out.println("Error: El monto debe ser mayor a 0.");
+                }
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Error: Ingrese un monto valido");
+            }
+        }
         procesador.procesar(cuentaOrigen, emailDestino, monto, banco);
     }
 
@@ -150,11 +165,25 @@ public class PortalBancario {
         System.out.print("Dirección: ");
         String direccion = scanner.nextLine();
 
-        System.out.println("Seleccione el tipo de cuenta (1. AHORRO, 2. CORRIENTE, 3. SUELDO): ");
-        int tipoOpcion = scanner.nextInt();
+        int opcion = 0;
+        boolean esOpcionValida = false;
+        while (!esOpcionValida) {
+            System.out.println("Seleccione el tipo de cuenta (1. AHORRO, 2. CORRIENTE, 3. SUELDO): ");
+            try {
+                opcion = Integer.parseInt(scanner.nextLine());
+                if (opcion == 1 || opcion == 2 || opcion == 3) {
+                    esOpcionValida = true;
+                } else {
+                    System.out.println("Error: Opcion no valida.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Ingrese una opcion valida.");
+            }
+        }
+
         TipoDeCuenta tipo = TipoDeCuenta.AHORRO;
-        if (tipoOpcion == 2) tipo = TipoDeCuenta.CORRIENTE;
-        if (tipoOpcion == 3) tipo = TipoDeCuenta.SUELDO;
+        if (opcion == 2) tipo = TipoDeCuenta.CORRIENTE;
+        if (opcion == 3) tipo = TipoDeCuenta.SUELDO;
 
         System.out.println("Seleccione Sucursal:");
         List<Sucursal> sucursales = banco.getSucursales();
