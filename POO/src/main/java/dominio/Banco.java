@@ -6,11 +6,19 @@ import java.util.List;
 public class Banco {
     // Lista de cuentas
     private List<Sucursal> sucursales = new ArrayList<>();
+    private List<Usuario> usuarios = new ArrayList<>();
 
     public Banco() {
-        Sucursal boedo = new Sucursal("Sucursal Boedo","adminboedo","1234");
-        Sucursal caballito = new Sucursal("Sucursal Caballito","admincaballito","1234");
-        Sucursal once = new Sucursal("Sucursal Once","adminonce","1234");
+        usuarios.add(new Usuario("admin@banco.com", "banco123", Rol.ADMIN_CENTRAL));
+
+        usuarios.add(new Usuario("boedo@banco.com", "1234", Rol.ADMIN_LOCAL));
+        Sucursal boedo = new Sucursal("Sucursal Boedo", "boedo@banco.com");
+
+        usuarios.add(new Usuario("caballito@banco.com", "1234", Rol.ADMIN_LOCAL));
+        Sucursal caballito = new Sucursal("Sucursal Caballito", "caballito@banco.com");
+
+        usuarios.add(new Usuario("once@banco.com", "1234", Rol.ADMIN_LOCAL));
+        Sucursal once = new Sucursal("Sucursal Once", "once@banco.com");
 
         sucursales.add(boedo);
         sucursales.add(caballito);
@@ -38,79 +46,47 @@ public class Banco {
         return saldoTotal;
     }
 
-    //Getter de las cuentas
-    public List<Sucursal> getSucursales() {
-        return sucursales;
+    public void cargarDatosEnSucursales(Sucursal boedo, Sucursal caballito, Sucursal once) {
+        registrarNuevoCliente(boedo, "Lucas López", 22, "lucas@gmail.com", "1234", "San Juan 123", TipoDeCuenta.AHORRO);
+        registrarNuevoCliente(once, "Sofia Martinez", 25, "sofia@gmail.com", "1234", "Avenida Boedo 456", TipoDeCuenta.CORRIENTE);
+        registrarNuevoCliente(caballito, "Martin Gomez", 30, "martin@gmail.com", "1234", "Rivadavia 4500", TipoDeCuenta.SUELDO);
     }
 
-    public void cargarDatosEnSucursales(Sucursal boedo, Sucursal caballito, Sucursal once) {
-        boedo.registrarCuenta(new CuentaBuilder()
-                .conNombre("Lucas López")
-                .conEdad(22)
-                .conEmail("lucas@gmail.com")
-                .conPassword("1234")
-                .conDireccion("San Juan 123")
-                .conTipo(TipoDeCuenta.AHORRO)
-                .conSucursal(boedo)
-                .construir());
+    public void registrarNuevoCliente(Sucursal sucursal, String nombre, int edad, String email, String password, String direccion, TipoDeCuenta tipo) {
+        usuarios.add(new Usuario(email, password, Rol.CLIENTE));
 
-        boedo.registrarCuenta(new CuentaBuilder()
-                .conNombre("Sofia Martinez")
-                .conEdad(25)
-                .conEmail("sofia@gmail.com")
-                .conPassword("1234")
-                .conDireccion("Avenida Boedo 456")
-                .conTipo(TipoDeCuenta.CORRIENTE)
-                .conSucursal(boedo)
-                .construir());
-
-        caballito.registrarCuenta(new CuentaBuilder()
-                .conNombre("Martin Gomez")
-                .conEdad(30)
-                .conEmail("martin@gmail.com")
-                .conPassword("1234")
-                .conDireccion("Rivadavia 4500")
-                .conTipo(TipoDeCuenta.SUELDO)
-                .conSucursal(caballito)
-                .construir());
-
-        caballito.registrarCuenta(new CuentaBuilder()
-                .conNombre("Valeria Sanchez")
-                .conEdad(28)
-                .conEmail("valeria@gmail.com")
-                .conPassword("1234")
-                .conDireccion("Acoyte 120")
-                .conTipo(TipoDeCuenta.AHORRO)
-                .conSucursal(caballito)
-                .construir());
-
-        once.registrarCuenta(new CuentaBuilder()
-                .conNombre("Diego Torres")
-                .conEdad(45)
-                .conEmail("diego@gmail.com")
-                .conPassword("1234")
-                .conDireccion("Corrientes 2500")
-                .conTipo(TipoDeCuenta.CORRIENTE)
-                .conSucursal(once)
-                .construir());
-
-        once.registrarCuenta(new CuentaBuilder()
-                .conNombre("Camila Fernandez")
-                .conEdad(33)
-                .conEmail("camila@gmail.com")
-                .conPassword("1234")
-                .conDireccion("Pueyrredon 300")
-                .conTipo(TipoDeCuenta.SUELDO)
-                .conSucursal(once)
-                .construir());
+        Cuenta nuevaCuenta = new CuentaBuilder()
+                .conNombre(nombre).conEdad(edad).conEmail(email)
+                .conDireccion(direccion).conTipo(tipo).conSucursal(sucursal)
+                .construir();
+        sucursal.registrarCuenta(nuevaCuenta);
     }
 
     public void mostrarAuditoriaGlobal() {
         System.out.println("---AUDITORIA GLOBAL DE LAS SUCURSALES---");
         for (Sucursal sucursal : sucursales) {
-            System.out.println("Sucursal: " + sucursal.getNombre() + " | Admin local: " + sucursal.getAdminUser());
+            System.out.println("Sucursal: " + sucursal.getNombre() + " | Admin local: " + sucursal.getEmailAdmin());
             System.out.println("Cuentas registradas: " + sucursal.getCuentas().size());
             System.out.println("Saldo total: $" + sucursal.consultarSaldoTotal());
         }
+    }
+
+    public Usuario buscarUsuarioPorEmail(String email) {
+        for (Usuario u : usuarios) {
+            if (u.getEmail().equalsIgnoreCase(email)) return u;
+        }
+        return null;
+    }
+
+    public Sucursal buscarSucursalPorAdmin(String emailAdmin) {
+        for (Sucursal s : sucursales) {
+            if (s.getEmailAdmin().equalsIgnoreCase(emailAdmin)) return s;
+        }
+        return null;
+    }
+
+    //Getter de las cuentas
+    public List<Sucursal> getSucursales() {
+        return sucursales;
     }
 }

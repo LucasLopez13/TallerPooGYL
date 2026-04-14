@@ -24,29 +24,51 @@ public class PortalBancario {
         MenuGenerico menuPrincipal = new MenuGenerico("BIENVENIDOS AL SISTEMA BANCARIO", scanner);
 
         System.out.println("\nSeleccione una opción:");
-        menuPrincipal.agregarOpcion(1,"Iniciar Sesión (Usuarios)", () -> loginUsuario());
-        menuPrincipal.agregarOpcion(2,"Panel de Administrador", () -> loginAdmin()  );
-        menuPrincipal.agregarOpcion(3,"Crear nueva cuenta", () -> crearCuenta());
-        menuPrincipal.agregarOpcionSalir(4,"Salir");
+        menuPrincipal.agregarOpcion(1, "Iniciar Sesión", () -> iniciarSesion());
+        menuPrincipal.agregarOpcion(2, "Solicitar Apertura de Cuenta", () -> crearCuenta());
+        menuPrincipal.agregarOpcionSalir(3, "Salir");
 
         menuPrincipal.mostrar();
         scanner.close();
         System.out.println("Gracias por utilizar el sistema bancario. ¡Adios!");
     }
 
-    private void loginUsuario() {
+    private void iniciarSesion() {
         System.out.print("\nEmail: ");
         String email = scanner.nextLine();
         System.out.print("Contraseña: ");
         String password = scanner.nextLine();
 
-        Cuenta cuenta = banco.buscarPorEmailEnSucursales(email);
+        // 1. Buscamos al usuario en el sistema de seguridad
+        Usuario usuario = banco.buscarUsuarioPorEmail(email);
 
-        if (cuenta != null && cuenta.validarPassword(password) && !cuenta.isSolicitoBaja()) {
-            System.out.println("¡Bienvenido/a " + cuenta.getNombre() + "!");
-            menuOperacionesUsuario(cuenta);
+        if (usuario != null && usuario.validarPassword(password)) {
+            // 2. Enrutador por Roles (¡El corazón del sistema IAM!)
+            switch (usuario.getRol()) {
+                case CLIENTE:
+                    // Buscamos su cuenta uniendo por el email
+                    Cuenta cuenta = banco.buscarPorEmailEnSucursales(usuario.getEmail());
+                    if (cuenta != null && !cuenta.isSolicitoBaja()) {
+                        System.out.println("\n¡Bienvenido/a " + cuenta.getNombre() + "!");
+                        menuOperacionesUsuario(cuenta);
+                    } else {
+                        System.out.println("Su cuenta está pendiente de baja o no existe.");
+                    }
+                    break;
+
+                case ADMIN_LOCAL:
+                    // Buscamos qué sucursal tiene asignada este email
+                    Sucursal sucursalDelAdmin = banco.buscarSucursalPorAdmin(usuario.getEmail());
+                    new PanelAdminLocal(sucursalDelAdmin, scanner).iniciar();
+                    break;
+
+                case ADMIN_CENTRAL:
+                    System.out.println("\n¡Bienvenido/a Super Administrador!");
+                    new PanelAdminCentral(banco, scanner).iniciar();
+                    break;
+            }
         } else {
-            System.out.println("Error: Email o contraseña incorrectos.");
+            System.out.println("Error: Credenciales incorrectas.");
         }
     }
 
@@ -108,27 +130,6 @@ public class PortalBancario {
             }
         }
         procesador.procesar(cuentaOrigen, emailDestino, monto, banco);
-    }
-
-    private void loginAdmin() {
-        System.out.print("\nUsuario de Administrador: ");
-        String adminUser = scanner.nextLine();
-        System.out.print("\nContraseña de Administrador: ");
-        String adminPass = scanner.nextLine();
-
-        if (adminUser.equals("banco") && adminPass.equals("banco123")) {
-            new PanelAdminCentral(banco,scanner).iniciar();
-            return;
-        }
-
-        for (Sucursal sucursal : banco.getSucursales()) {
-            if (sucursal.getAdminUser().equals(adminUser) && sucursal.getAdminPassword().equals(adminPass)) {
-                new PanelAdminLocal(sucursal,scanner).iniciar();
-                return;
-            }
-        }
-
-        System.out.println("Acceso denegado. Credenciales incorrectas.");
     }
 
     private void crearCuenta() {
@@ -194,18 +195,8 @@ public class PortalBancario {
         scanner.nextLine();
         Sucursal sucursalElegida = sucursales.get(sucOpcion);
 
-        CuentaBuilder builder = new CuentaBuilder();
-        Cuenta nuevaCuenta = builder
-                .conNombre(nombre)
-                .conEdad(edad)
-                .conEmail(email)
-                .conPassword(password)
-                .conDireccion(direccion)
-                .conTipo(tipo)
-                .conSucursal(sucursalElegida)
-                .construir();
+        banco.registrarNuevoCliente(sucursalElegida, nombre, edad, email, password, direccion, tipo);
 
-        sucursalElegida.registrarCuenta(nuevaCuenta);
         System.out.println("¡Cuenta creada exitosamente en " + sucursalElegida.getNombre() + "!");
     }
 }

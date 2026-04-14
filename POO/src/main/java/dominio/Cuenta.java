@@ -4,7 +4,6 @@ public class Cuenta {
     private String nombre;
     private int edad;
     private String email;
-    private String password;
     private String direccion;
     //Enum para el tipo de cuenta
     private TipoDeCuenta tipoDeCuenta;
@@ -12,11 +11,10 @@ public class Cuenta {
     private Sucursal sucursal;
     private boolean solicitoBaja;
 
-    public Cuenta(String nombre, int edad, String email, String password, String direccion, TipoDeCuenta tipoDeCuenta, Sucursal sucursal) {
+    public Cuenta(String nombre, int edad, String email, String direccion, TipoDeCuenta tipoDeCuenta, Sucursal sucursal) {
         this.nombre = nombre;
         this.edad = edad;
         this.email = email;
-        this.password = password;
         this.direccion = direccion;
         this.tipoDeCuenta = tipoDeCuenta;
         this.sucursal = sucursal;
@@ -32,10 +30,6 @@ public class Cuenta {
 
     public void restarSaldo(double monto) {
         Math.max(0.0,this.saldo = this.saldo - monto);
-    }
-
-    public boolean validarPassword(String password) {
-        return this.password.equals(password);
     }
 
     public String getNombre() {
