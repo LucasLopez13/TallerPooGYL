@@ -17,6 +17,11 @@ public class MenuGenerico {
         this.salir = false;
     }
 
+    /*
+    Patron Command para agregar opciones, mediante la interfaz Runnable.
+    Cada vez que se utilize este metodo convierte la accion que el usuario
+    quiere realizar en un objeto y este se guarda en el mapa Opciones.
+     */
     public void agregarOpcion(int numero, String descripcion, Runnable accion) {
         opciones.put(numero, new OpcionMenu(descripcion, accion));
     }
@@ -36,6 +41,7 @@ public class MenuGenerico {
             for (Map.Entry<Integer,OpcionMenu> entry : opciones.entrySet()) {
                 System.out.println(entry.getKey() + "." + entry.getValue().getDescripcion());
             }
+            System.out.print("\nSeleccione una opcion: ");
             int seleccion = scanner.nextInt();
             scanner.nextLine();
 
@@ -48,6 +54,7 @@ public class MenuGenerico {
         }
     }
 
+    //Clase interna para almacenar las opciones y su descripcion. Ademas de el metodo para ejecutarlas.
     private static class OpcionMenu {
         private String descripcion;
         private Runnable accion;

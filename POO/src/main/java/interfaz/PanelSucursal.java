@@ -17,7 +17,8 @@ public class PanelSucursal extends PanelBase{
     protected void configurarOpciones() {
         menu.agregarOpcion(1, "Listar mis usuarios y balances", () -> listarUsuariosLocales());
         menu.agregarOpcion(2, "Procesar bajas pendientes", () -> gestionarBajasLocales());
-        menu.agregarOpcionSalir(3, "Salir");
+        menu.agregarOpcion(3, "Balance general de la sucursal", () -> System.out.println("Balance TOTAL de la sucursal: $" + sucursal.consultarSaldoTotal()));
+        menu.agregarOpcionSalir(4, "Salir");
 
     }
 

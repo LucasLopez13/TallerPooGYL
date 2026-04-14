@@ -18,17 +18,20 @@ public class PanelBanco extends PanelBase {
     protected void configurarOpciones() {
         menu.agregarOpcion(1, "Auditoria de sucursales y balances", () -> banco.mostrarAuditoriaGlobal() );
         menu.agregarOpcion(2, "Ver todas las cuentas", () -> listarTodoElSistema());
-        menu.agregarOpcionSalir(3, "Salir");
+        menu.agregarOpcion(3, "Ver balance general del banco", () -> System.out.println("Balance TOTAL de la sucursal: $" + banco.consultarSaldoTotalDelBanco()));
+        menu.agregarOpcionSalir(4, "Salir");
 
     }
 
     public void listarTodoElSistema() {
         System.out.println("\n---LISTADO GLOBAL---");
         for (Sucursal sucursal : banco.getSucursales()) {
-            System.out.println(sucursal.getNombre() + ": " + sucursal.consultarSaldoTotal());
+            System.out.println(sucursal.getNombre() + ": " + "$" + sucursal.consultarSaldoTotal());
             for (Cuenta cuenta : sucursal.getCuentas()) {
-                System.out.println("  - " + cuenta.getEmail() + ": " + cuenta.getSaldo());
+                System.out.println("  - " + cuenta.getEmail() + ": " + "$" + cuenta.getSaldo());
             }
         }
     }
+
+
 }

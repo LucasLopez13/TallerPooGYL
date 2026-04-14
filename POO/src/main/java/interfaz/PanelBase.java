@@ -13,7 +13,10 @@ public abstract class PanelBase {
 
     protected abstract void configurarOpciones();
 
-    //Template Method. Reutilizamos la estructura del menu.
+    /*
+    Template Method. Reutilizamos la estructura del menu.
+    Garantiza que siempre se llame al metodo configurarOpciones antes que a menu.mostrar().
+     */
     public final void iniciar() {
         configurarOpciones();
         menu.mostrar();

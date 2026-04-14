@@ -44,6 +44,7 @@ public class Sucursal {
             saldoTotal += cuenta.getSaldo();
         }
         return saldoTotal;
+
     }
 
     public List<Cuenta> getCuentas() {
