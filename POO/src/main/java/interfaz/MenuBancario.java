@@ -1,5 +1,6 @@
-package dominio;
+package interfaz;
 
+import dominio.*;
 import estrategias.Depositar;
 import estrategias.ProcesadorDeTransacciones;
 import estrategias.Retirar;
@@ -12,49 +13,25 @@ public class MenuBancario {
     private Scanner scanner;
     private Banco banco;
     private ProcesadorDeTransacciones procesador;
-    private PanelAdmin panelAdmin;
 
     public MenuBancario(Banco banco) {
         this.banco = banco;
         this.scanner = new Scanner(System.in);
         this.procesador = new ProcesadorDeTransacciones();
-        this.panelAdmin = new PanelAdmin(banco, scanner);
     }
 
     public void iniciar() {
-        boolean salir = false;
-        System.out.println("=== BIENVENIDOS AL SISTEMA BANCARIO ===");
+        MenuGenerico menuPrincipal = new MenuGenerico("BIENVENIDOS AL SISTEMA BANCARIO", scanner);
 
-        while (!salir) {
-            System.out.println("\nSeleccione una opción:");
-            System.out.println("1. Iniciar Sesión (Usuarios)");
-            System.out.println("2. Panel de Administrador");
-            System.out.println("3. Crear Nueva Cuenta");
-            System.out.println("4. Salir");
-            System.out.print("Opción: ");
+        System.out.println("\nSeleccione una opción:");
+        menuPrincipal.agregarOpcion(1,"Iniciar Sesión (Usuarios)", () -> loginUsuario());
+        menuPrincipal.agregarOpcion(2,"Panel de Administrador", () -> loginAdmin()  );
+        menuPrincipal.agregarOpcion(3,"Crear nueva cuenta", () -> crearCuenta());
+        menuPrincipal.agregarOpcionSalir(4,"Salir");
 
-            int opcion = scanner.nextInt();
-            scanner.nextLine();
-
-            switch (opcion) {
-                case 1:
-                    loginUsuario();
-                    break;
-                case 2:
-                    loginAdmin();
-                    break;
-                case 3:
-                    crearCuenta();
-                    break;
-                case 4:
-                    salir = true;
-                    System.out.println("Gracias por utilizar el sistema bancario. ¡Adios!");
-                    break;
-                default:
-                    System.out.println("Opción no válida.");
-            }
-        }
+        menuPrincipal.mostrar();
         scanner.close();
+        System.out.println("Gracias por utilizar el sistema bancario. ¡Adios!");
     }
 
     private void loginUsuario() {
@@ -74,50 +51,31 @@ public class MenuBancario {
     }
 
     private void menuOperacionesUsuario(Cuenta cuentaUsuario) {
-        boolean cerrarSesion = false;
-        while (!cerrarSesion) {
-            System.out.println("\n---OPERACIONES---");
-            System.out.println("1. Depositar");
-            System.out.println("2. Retirar");
-            System.out.println("3. Transferir");
-            System.out.println("4. Consultar mi balance");
-            System.out.println("5. Solicitar BAJA de mi cuenta");
-            System.out.println("6. Cerrar Sesión");
-            System.out.print("Opción: ");
+        MenuGenerico subMenu = new MenuGenerico("OPERACIONES DE: " + cuentaUsuario.getNombre(), scanner);
 
-            int opcion = scanner.nextInt();
-            scanner.nextLine();
-
-            switch (opcion) {
-                case 1:
-                    procesador.setEstrategia(new Depositar());
-                    realizarTransaccion(cuentaUsuario, false);
-                    break;
-                case 2:
-                    procesador.setEstrategia(new Retirar());
-                    realizarTransaccion(cuentaUsuario, false);
-                    break;
-                case 3:
-                    procesador.setEstrategia(new Transferir());
-                    realizarTransaccion(cuentaUsuario, true);
-                    break;
-                case 4:
-                    System.out.println("Su saldo actual es: $" + cuentaUsuario.getSaldo());
-                    break;
-                case 5:
-                    cuentaUsuario.solicitarBaja();
-                    System.out.println("Solicitud de baja enviada. Espere la respuesta del administrador.");
-                    System.out.println("Por su seguridad, se cerrara la sesion");
-                    cerrarSesion = true;
-                    break;
-                case 6:
-                    cerrarSesion = true;
-                    System.out.println("Sesión cerrada.");
-                    break;
-                default:
-                    System.out.println("Opción no válida.");
-            }
-        }
+        subMenu.agregarOpcion(1,"Depositar", () -> {
+            procesador.setEstrategia(new Depositar());
+            realizarTransaccion(cuentaUsuario, false);
+        });
+        subMenu.agregarOpcion(2,"Retirar", () -> {
+            procesador.setEstrategia(new Retirar());
+            realizarTransaccion(cuentaUsuario, false);
+        });
+        subMenu.agregarOpcion(3,"Transferir", () -> {
+            procesador.setEstrategia(new Transferir());
+            realizarTransaccion(cuentaUsuario, true);
+        });
+        subMenu.agregarOpcion(4,"Consultar mi balance", () -> {
+            System.out.println("Su saldo actual es: $" + cuentaUsuario.getSaldo());
+        });
+        subMenu.agregarOpcion(5, "Solicitar BAJA de mi cuenta", () -> {
+            cuentaUsuario.solicitarBaja();
+            System.out.println("Solicitud de baja enviada. Espere la respuesta del administrador.");
+            System.out.println("Por su seguridad, se cerrara la sesion");
+            subMenu.forzarSalida();
+        });
+        subMenu.agregarOpcionSalir(6, "Salir");
+        subMenu.mostrar();
     }
 
     private void realizarTransaccion(Cuenta cuentaOrigen, boolean requiereDestino) {
@@ -135,6 +93,27 @@ public class MenuBancario {
         double monto = scanner.nextDouble();
 
         procesador.procesar(cuentaOrigen, emailDestino, monto, banco);
+    }
+
+    private void loginAdmin() {
+        System.out.print("\nUsuario de Administrador: ");
+        String adminUser = scanner.nextLine();
+        System.out.print("\nContraseña de Administrador: ");
+        String adminPass = scanner.nextLine();
+
+        if (adminUser.equals("banco") && adminPass.equals("banco123")) {
+            new PanelBanco(banco,scanner).iniciar();
+            return;
+        }
+
+        for (Sucursal sucursal : banco.getSucursales()) {
+            if (sucursal.getAdminUser().equals(adminUser) && sucursal.getAdminPassword().equals(adminPass)) {
+                new PanelSucursal(sucursal,scanner).iniciar();
+                return;
+            }
+        }
+
+        System.out.println("Acceso denegado. Credenciales incorrectas.");
     }
 
     private void crearCuenta() {
@@ -199,17 +178,5 @@ public class MenuBancario {
 
         sucursalElegida.registrarCuenta(nuevaCuenta);
         System.out.println("¡Cuenta creada exitosamente en " + sucursalElegida.getNombre() + "!");
-    }
-
-
-    private void loginAdmin() {
-        System.out.print("\nContraseña de Administrador: ");
-        String password = scanner.nextLine();
-
-        if (password.equals("admin")) {
-            panelAdmin.mostrarMenu();
-        } else {
-            System.out.println("Acceso denegado.");
-        }
     }
 }

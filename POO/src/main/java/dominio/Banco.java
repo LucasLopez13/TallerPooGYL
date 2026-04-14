@@ -104,4 +104,13 @@ public class Banco {
                 .conSucursal(once)
                 .construir());
     }
+
+    public void mostrarAuditoriaGlobal() {
+        System.out.println("---AUDITORIA GLOBAL DE LAS SUCURSALES---");
+        for (Sucursal sucursal : sucursales) {
+            System.out.println("Sucursal: " + sucursal.getNombre() + " | Admin local: " + sucursal.getAdminUser());
+            System.out.println("Cuentas registradas: " + sucursal.getCuentas().size());
+            System.out.println("Saldo total: $" + sucursal.consultarSaldoTotal());
+        }
+    }
 }

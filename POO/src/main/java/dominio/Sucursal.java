@@ -53,4 +53,12 @@ public class Sucursal {
     public String getNombre() {
         return nombre;
     }
+
+    public String getAdminUser() {
+        return adminUser;
+    }
+
+    public String getAdminPassword() {
+        return adminPassword;
+    }
 }

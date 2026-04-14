@@ -1,19 +1,19 @@
 package interfaz;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 public class MenuGenerico {
     private String titulo;
     private Scanner scanner;
-    private HashMap<Integer, OpcionMenu> opciones;
+    private Map<Integer, OpcionMenu> opciones;
     private boolean salir;
 
     public MenuGenerico(String titulo, Scanner scanner) {
         this.titulo = titulo;
         this.scanner = scanner;
-        this.opciones = new HashMap<>();
+        this.opciones = new LinkedHashMap<>();
         this.salir = false;
     }
 
