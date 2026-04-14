@@ -9,12 +9,12 @@ import estrategias.Transferir;
 import java.util.List;
 import java.util.Scanner;
 
-public class MenuBancario {
+public class PortalBancario {
     private Scanner scanner;
     private Banco banco;
     private ProcesadorDeTransacciones procesador;
 
-    public MenuBancario(Banco banco) {
+    public PortalBancario(Banco banco) {
         this.banco = banco;
         this.scanner = new Scanner(System.in);
         this.procesador = new ProcesadorDeTransacciones();
@@ -102,13 +102,13 @@ public class MenuBancario {
         String adminPass = scanner.nextLine();
 
         if (adminUser.equals("banco") && adminPass.equals("banco123")) {
-            new PanelBanco(banco,scanner).iniciar();
+            new PanelAdminCentral(banco,scanner).iniciar();
             return;
         }
 
         for (Sucursal sucursal : banco.getSucursales()) {
             if (sucursal.getAdminUser().equals(adminUser) && sucursal.getAdminPassword().equals(adminPass)) {
-                new PanelSucursal(sucursal,scanner).iniciar();
+                new PanelAdminLocal(sucursal,scanner).iniciar();
                 return;
             }
         }

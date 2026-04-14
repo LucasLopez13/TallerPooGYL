@@ -5,10 +5,10 @@ import dominio.Sucursal;
 
 import java.util.Scanner;
 
-public class PanelSucursal extends PanelBase{
+public class PanelAdminLocal extends PanelBase{
     private Sucursal sucursal;
 
-    public PanelSucursal(Sucursal sucursal, Scanner scanner) {
+    public PanelAdminLocal(Sucursal sucursal, Scanner scanner) {
         super(new MenuGenerico("PANEL SUCURSAL - " + sucursal.getNombre(),scanner),scanner);
         this.sucursal = sucursal;
     }
@@ -35,16 +35,14 @@ public class PanelSucursal extends PanelBase{
 
     public void gestionarBajasLocales() {
         System.out.println("Cuentas que solicitacion la baja en sucursal " + sucursal.getNombre() + ":");
-        boolean haySolicitudes = false;
-        for (Cuenta cuenta : sucursal.getCuentas()) {
-            if (cuenta.isSolicitoBaja()) {
-                haySolicitudes = true;
-                System.out.println(cuenta.getEmail() + " | " + cuenta.getNombre());
-            }
-        }
-        if (!haySolicitudes) {
+        var cuentas = sucursal.obtenerSolicitudesDeBajas();
+        if (cuentas.isEmpty()) {
             System.out.println("No hay solicitudes de baja pendientes.");
             return;
+        }
+
+        for (Cuenta c : cuentas) {
+            System.out.println("- " + c.getNombre() + " (" + c.getEmail() + ")");
         }
 
         System.out.println("Ingrese el email de la cuenta para confirmar la baja:");

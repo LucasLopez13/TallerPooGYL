@@ -6,10 +6,10 @@ import dominio.Sucursal;
 
 import java.util.Scanner;
 
-public class PanelBanco extends PanelBase {
+public class PanelAdminCentral extends PanelBase {
     private Banco banco;
 
-    public PanelBanco(Banco banco, Scanner scanner) {
+    public PanelAdminCentral(Banco banco, Scanner scanner) {
         super(new MenuGenerico("Panel Banco", scanner), scanner);
         this.banco = banco;
     }

@@ -47,6 +47,16 @@ public class Sucursal {
 
     }
 
+    public List<Cuenta>obtenerSolicitudesDeBajas() {
+        List<Cuenta> cuentasConSolicitud = new ArrayList<>();
+        for (Cuenta cuenta : cuentas) {
+            if (cuenta.isSolicitoBaja()) {
+                cuentasConSolicitud.add(cuenta);
+            }
+        }
+        return cuentasConSolicitud;
+    }
+
     public List<Cuenta> getCuentas() {
         return cuentas;
     }
