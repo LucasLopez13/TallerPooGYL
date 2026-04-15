@@ -20,9 +20,12 @@ public class Banco {
         usuarios.add(new Usuario("once@banco.com", "1234", Rol.ADMIN_LOCAL));
         Sucursal once = new Sucursal("Sucursal Once", "once@banco.com");
 
+        Sucursal palermo = new Sucursal("Sucursal Palermo", null);
+
         sucursales.add(boedo);
         sucursales.add(caballito);
         sucursales.add(once);
+        sucursales.add(palermo);
 
         cargarDatosEnSucursales(boedo,caballito,once);
     }
@@ -62,6 +65,11 @@ public class Banco {
         sucursal.registrarCuenta(nuevaCuenta);
     }
 
+    public void registrarNuevoAdminLocal(Sucursal sucursal, String email, String password) {
+        usuarios.add(new Usuario(email, password, Rol.ADMIN_LOCAL));
+        sucursal.setEmailAdmin(email);
+    }
+
     public void mostrarAuditoriaGlobal() {
         System.out.println("---AUDITORIA GLOBAL DE LAS SUCURSALES---");
         for (Sucursal sucursal : sucursales) {
@@ -83,6 +91,16 @@ public class Banco {
             if (s.getEmailAdmin().equalsIgnoreCase(emailAdmin)) return s;
         }
         return null;
+    }
+
+    public List<Sucursal> obtenerSucursalesSinAdmin() {
+        List<Sucursal> sucursalesHuerfanas = new ArrayList<>();
+        for (Sucursal s : sucursales) {
+            if (s.getEmailAdmin() == null || s.getEmailAdmin().isEmpty()) {
+                sucursalesHuerfanas.add(s);
+            }
+        }
+        return sucursalesHuerfanas;
     }
 
     //Getter de las cuentas

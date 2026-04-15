@@ -66,4 +66,8 @@ public class Sucursal {
     public String getEmailAdmin() {
         return emailAdmin;
     }
+
+    public void setEmailAdmin(String emailAdmin) {
+        this.emailAdmin = emailAdmin;
+    }
 }
