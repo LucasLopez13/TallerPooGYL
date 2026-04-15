@@ -1,5 +1,10 @@
 package dominio;
 
+/*
+ * Aplicamos el principio de Composición sobre Herencia. Esta clase tiene Responsabilidad
+ * Única: manejar la seguridad (credenciales y permisos). La relación con sus cuentas
+ * bancarias o sucursales se hace de forma relacional utilizando el 'email'.
+ */
 public class Usuario {
     private String email;
     private String password;

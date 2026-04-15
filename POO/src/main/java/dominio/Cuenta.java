@@ -44,10 +44,6 @@ public class Cuenta {
         return saldo;
     }
 
-    public Sucursal getSucursal() {
-        return sucursal;
-    }
-
     public void solicitarBaja() {
         this.solicitoBaja = true;
     }

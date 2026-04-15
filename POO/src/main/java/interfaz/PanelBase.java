@@ -14,8 +14,10 @@ public abstract class PanelBase {
     protected abstract void configurarOpciones();
 
     /*
-    Template Method. Reutilizamos la estructura del menu.
-    Garantiza que siempre se llame al metodo configurarOpciones antes que a menu.mostrar().
+     * PATRÓN TEMPLATE METHOD: Define el esqueleto inmutable del panel.
+     * Al declarar el método como 'final', garantizamos que las clases hijas
+     * (PanelAdminCentral, PanelAdminLocal) no puedan alterar el ciclo de vida:
+     * siempre se configuran las opciones primero y luego se muestra el menú.
      */
     public final void iniciar() {
         configurarOpciones();

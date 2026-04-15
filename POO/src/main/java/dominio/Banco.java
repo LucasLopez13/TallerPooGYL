@@ -70,15 +70,6 @@ public class Banco {
         sucursal.setEmailAdmin(email);
     }
 
-    public void mostrarAuditoriaGlobal() {
-        System.out.println("---AUDITORIA GLOBAL DE LAS SUCURSALES---");
-        for (Sucursal sucursal : sucursales) {
-            System.out.println("Sucursal: " + sucursal.getNombre() + " | Admin local: " + sucursal.getEmailAdmin());
-            System.out.println("Cuentas registradas: " + sucursal.getCuentas().size());
-            System.out.println("Saldo total: $" + sucursal.consultarSaldoTotal());
-        }
-    }
-
     public Usuario buscarUsuarioPorEmail(String email) {
         for (Usuario u : usuarios) {
             if (u.getEmail().equalsIgnoreCase(email)) return u;

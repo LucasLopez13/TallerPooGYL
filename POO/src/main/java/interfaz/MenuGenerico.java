@@ -18,9 +18,9 @@ public class MenuGenerico {
     }
 
     /*
-    Patron Command para agregar opciones, mediante la interfaz Runnable.
-    Cada vez que se utilize este metodo convierte la accion que el usuario
-    quiere realizar en un objeto y este se guarda en el mapa Opciones.
+     * PATRÓN COMMAND: Encapsulamos la acción que el usuario quiere realizar en un
+     * objeto Runnable (función lambda). Esto permite inyectar comportamientos al menú
+     * dinámicamente y respeta el Principio Open/Closed (OCP) de SOLID.
      */
     public void agregarOpcion(int numero, String descripcion, Runnable accion) {
         opciones.put(numero, new OpcionMenu(descripcion, accion));
@@ -42,7 +42,13 @@ public class MenuGenerico {
                 System.out.println(entry.getKey() + "." + entry.getValue().getDescripcion());
             }
             System.out.print("\nSeleccione una opcion: ");
+            /*
+             * PREVENCIÓN DE FALLOS: Se lee la entrada como String con nextLine() para limpiar
+             * el salto de línea (\n) del buffer de memoria. Luego se convierte a número dentro
+             * de un bloque try-catch, evitando que el sistema crashee por errores de tipeo.
+             */
             String input = scanner.nextLine();
+
             int seleccion = -1;
 
             try {

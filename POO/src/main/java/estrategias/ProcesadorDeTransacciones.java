@@ -4,7 +4,12 @@ import dominio.Banco;
 import dominio.Cuenta;
 
 public class ProcesadorDeTransacciones {
-    //El usuario elije la estrategia que quiere usar
+    /*
+     * PATRÓN STRATEGY: Permite inyectar y cambiar el algoritmo de la transacción
+     * (Depositar, Retirar, Transferir) en tiempo de ejecución. Facilita la escalabilidad:
+     * si el banco suma "Pago de Servicios", solo creamos una nueva clase que implemente
+     * la interfaz sin tener que modificar este procesador central.
+     */
     private TransaccionStrategy estrategia;
 
     //La setea aca para que no se repita en cada metodo

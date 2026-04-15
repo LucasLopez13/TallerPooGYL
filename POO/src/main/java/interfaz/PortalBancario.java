@@ -39,14 +39,16 @@ public class PortalBancario {
         System.out.print("Contraseña: ");
         String password = scanner.nextLine();
 
-        // 1. Buscamos al usuario en el sistema de seguridad
         Usuario usuario = banco.buscarUsuarioPorEmail(email);
 
         if (usuario != null && usuario.validarPassword(password)) {
-            // 2. Enrutador por Roles (¡El corazón del sistema IAM!)
+            /*
+             * ENRUTADOR POR ROLES: Una vez autenticado exitosamente en el sistema global,
+             * usamos el Rol del usuario para instanciar y derivar el flujo hacia
+             * el panel (Vista) correspondiente a sus niveles de acceso.
+             */
             switch (usuario.getRol()) {
                 case CLIENTE:
-                    // Buscamos su cuenta uniendo por el email
                     Cuenta cuenta = banco.buscarPorEmailEnSucursales(usuario.getEmail());
                     if (cuenta != null && !cuenta.isSolicitoBaja()) {
                         System.out.println("\n¡Bienvenido/a " + cuenta.getNombre() + "!");
@@ -57,13 +59,12 @@ public class PortalBancario {
                     break;
 
                 case ADMIN_LOCAL:
-                    // Buscamos qué sucursal tiene asignada este email
                     Sucursal sucursalDelAdmin = banco.buscarSucursalPorAdmin(usuario.getEmail());
                     new PanelAdminLocal(sucursalDelAdmin, scanner).iniciar();
                     break;
 
                 case ADMIN_CENTRAL:
-                    System.out.println("\n¡Bienvenido/a Super Administrador!");
+                    System.out.println("\n¡Bienvenido/a ADMIN CENTRAL!");
                     new PanelAdminCentral(banco, scanner).iniciar();
                     break;
             }
