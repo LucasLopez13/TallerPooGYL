@@ -187,13 +187,29 @@ public class PortalBancario {
         if (opcion == 2) tipo = TipoDeCuenta.CORRIENTE;
         if (opcion == 3) tipo = TipoDeCuenta.SUELDO;
 
-        System.out.println("Seleccione Sucursal:");
+        System.out.println("\nSeleccione Sucursal:");
         List<Sucursal> sucursales = banco.getSucursales();
         for (int i = 0; i < sucursales.size(); i++) {
             System.out.println((i + 1) + ". " + sucursales.get(i).getNombre());
         }
-        int sucOpcion = scanner.nextInt() - 1;
-        scanner.nextLine();
+
+        int sucOpcion = -1;
+        boolean esSucursalValida = false;
+
+        while (!esSucursalValida) {
+            System.out.print("Opción: ");
+            try {
+                sucOpcion = Integer.parseInt(scanner.nextLine()) - 1;
+
+                if (sucOpcion >= 0 && sucOpcion < sucursales.size()) {
+                    esSucursalValida = true;
+                } else {
+                    System.out.println("Error: Opción erronea. Ingrese un número entre 1 y " + sucursales.size() + ".");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Ingrese un número válido.");
+            }
+        }
         Sucursal sucursalElegida = sucursales.get(sucOpcion);
 
         banco.registrarNuevoCliente(sucursalElegida, nombre, edad, email, password, direccion, tipo);
