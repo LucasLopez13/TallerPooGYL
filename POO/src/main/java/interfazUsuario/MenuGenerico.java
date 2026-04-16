@@ -41,11 +41,6 @@ public class MenuGenerico {
             for (Map.Entry<Integer,OpcionMenu> entry : opciones.entrySet()) {
                 System.out.println(entry.getKey() + "." + entry.getValue().getDescripcion());
             }
-            /*
-             * PREVENCIÓN DE FALLOS: Se lee la entrada como String con nextLine() para limpiar
-             * el salto de línea (\n) del buffer de memoria. Luego se convierte a número dentro
-             * de un bloque try-catch, evitando que el sistema crashee por errores de tipeo.
-             */
             int seleccion = LectorConsola.leerEntero(scanner, "\nSeleccione una opcion: ");
 
             OpcionMenu opcionSeleccionada = opciones.get(seleccion);
