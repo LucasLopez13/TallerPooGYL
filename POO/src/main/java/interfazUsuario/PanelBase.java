@@ -14,7 +14,7 @@ public abstract class PanelBase {
     protected abstract void configurarOpciones();
 
     /*
-     * PATRÓN TEMPLATE METHOD: Define el esqueleto inmutable del panel.
+     * TEMPLATE METHOD: Define el esqueleto inmutable del panel.
      * Al declarar el método como 'final', garantizamos que las clases hijas
      * (PanelAdminCentral, PanelAdminLocal) no puedan alterar el ciclo de vida:
      * siempre se configuran las opciones primero y luego se muestra el menú.

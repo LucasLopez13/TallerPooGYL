@@ -18,7 +18,7 @@ public class MenuGenerico {
     }
 
     /*
-     * PATRÓN COMMAND: Encapsulamos la acción que el usuario quiere realizar en un
+     * COMMAND: Encapsulamos la acción que el usuario quiere realizar en un
      * objeto Runnable (función lambda). Esto permite inyectar comportamientos al menú
      * dinámicamente y respeta el Principio Open/Closed (OCP) de SOLID.
      */
@@ -52,7 +52,7 @@ public class MenuGenerico {
         }
     }
 
-    //Clase interna para almacenar las opciones y su descripcion. Ademas de el metodo para ejecutarlas.
+    //Clase interna para ejecutar las opciones y su descripcion. Ademas de el metodo para ejecutarlas.
     private static class OpcionMenu {
         private String descripcion;
         private Runnable accion;

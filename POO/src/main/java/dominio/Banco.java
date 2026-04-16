@@ -30,7 +30,6 @@ public class Banco {
         cargarDatosEnSucursales(boedo,caballito,once);
     }
 
-    //Buscar una cuenta por su email
     public Cuenta buscarPorEmailEnSucursales(String email) {
         for (Sucursal sucursal : sucursales) {
             var cuentaEncontrada = sucursal.buscarPorEmail(email);
@@ -94,7 +93,6 @@ public class Banco {
         return sucursalesHuerfanas;
     }
 
-    //Getter de las cuentas
     public List<Sucursal> getSucursales() {
         return sucursales;
     }

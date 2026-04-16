@@ -43,7 +43,7 @@ public class PortalBancario {
 
         if (usuario != null && usuario.validarPassword(password)) {
             /*
-             * ENRUTADOR POR ROLES: Una vez autenticado exitosamente en el sistema global,
+             * Una vez autenticado exitosamente en el sistema global,
              * usamos el Rol del usuario para instanciar y derivar el flujo hacia
              * el panel (Vista) correspondiente a sus niveles de acceso.
              */
