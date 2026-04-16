@@ -1,5 +1,5 @@
 import dominio.*;
-import interfaz.PortalBancario;
+import interfazUsuario.PortalBancario;
 
 public class Main {
     public static void main(String[] args) {

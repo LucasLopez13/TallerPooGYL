@@ -1,4 +1,4 @@
-package interfaz;
+package interfazUsuario;
 
 import dominio.*;
 import estrategias.Depositar;
@@ -112,24 +112,7 @@ public class PortalBancario {
             }
         }
 
-        double monto = 0;
-        boolean esMontoValido = false;
-        while (!esMontoValido) {
-            System.out.print("Ingrese el monto: ");
-            String inputMonto = scanner.nextLine();
-
-            try {
-                monto = Double.parseDouble(inputMonto);
-                if (monto > 0) {
-                    esMontoValido = true;
-                } else {
-                    System.out.println("Error: El monto debe ser mayor a 0.");
-                }
-            }
-            catch (NumberFormatException e) {
-                System.out.println("Error: Ingrese un monto valido");
-            }
-        }
+        double monto = LectorConsola.leerDoublePositivo(scanner, "Ingrese el monto: $");
         procesador.procesar(cuentaOrigen, emailDestino, monto, banco);
     }
 
@@ -138,25 +121,7 @@ public class PortalBancario {
         System.out.print("Nombre: ");
         String nombre = scanner.nextLine();
 
-        int edad = 0;
-        var esEdadValida = false;
-
-        while (!esEdadValida) {
-            System.out.print("Edad: ");
-            String inputEdad = scanner.nextLine();
-
-            try {
-                edad = Integer.parseInt(inputEdad);
-
-                if (edad > 0) {
-                    esEdadValida = true;
-                } else {
-                    System.out.println("Debe ingresar una edad válida.");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Error: Ingrese una edad válida");
-            }
-        }
+        int edad = LectorConsola.leerEnteroEnRango(scanner, "Edad: ", 1, 120);
 
         System.out.print("Email: ");
         String email = scanner.nextLine();
@@ -167,21 +132,8 @@ public class PortalBancario {
         System.out.print("Dirección: ");
         String direccion = scanner.nextLine();
 
-        int opcion = 0;
-        boolean esOpcionValida = false;
-        while (!esOpcionValida) {
-            System.out.println("Seleccione el tipo de cuenta (1. AHORRO, 2. CORRIENTE, 3. SUELDO): ");
-            try {
-                opcion = Integer.parseInt(scanner.nextLine());
-                if (opcion == 1 || opcion == 2 || opcion == 3) {
-                    esOpcionValida = true;
-                } else {
-                    System.out.println("Error: Opcion no valida.");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Error: Ingrese una opcion valida.");
-            }
-        }
+        int opcion = LectorConsola.leerEnteroEnRango(scanner,
+                "Seleccione el tipo de cuenta (1. AHORRO, 2. CORRIENTE, 3. SUELDO): ", 1, 3);
 
         TipoDeCuenta tipo = TipoDeCuenta.AHORRO;
         if (opcion == 2) tipo = TipoDeCuenta.CORRIENTE;
@@ -193,23 +145,7 @@ public class PortalBancario {
             System.out.println((i + 1) + ". " + sucursales.get(i).getNombre());
         }
 
-        int sucOpcion = -1;
-        boolean esSucursalValida = false;
-
-        while (!esSucursalValida) {
-            System.out.print("Opción: ");
-            try {
-                sucOpcion = Integer.parseInt(scanner.nextLine()) - 1;
-
-                if (sucOpcion >= 0 && sucOpcion < sucursales.size()) {
-                    esSucursalValida = true;
-                } else {
-                    System.out.println("Error: Opción erronea. Ingrese un número entre 1 y " + sucursales.size() + ".");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Error: Ingrese un número válido.");
-            }
-        }
+        int sucOpcion = LectorConsola.leerEnteroEnRango(scanner, "Opción: ", 1, sucursales.size()) - 1;
         Sucursal sucursalElegida = sucursales.get(sucOpcion);
 
         banco.registrarNuevoCliente(sucursalElegida, nombre, edad, email, password, direccion, tipo);

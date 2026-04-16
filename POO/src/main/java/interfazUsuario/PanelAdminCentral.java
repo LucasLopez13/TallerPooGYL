@@ -1,4 +1,4 @@
-package interfaz;
+package interfazUsuario;
 
 import dominio.Banco;
 import dominio.Cuenta;
@@ -58,21 +58,7 @@ public class PanelAdminCentral extends PanelBase {
             System.out.println((i + 1) + ". " + sucursalesHuerfanas.get(i).getNombre());
         }
 
-        int opcion = -1;
-        boolean opcionValida = false;
-        while (!opcionValida) {
-            System.out.print("Seleccione el número de la sucursal: ");
-            try {
-                opcion = Integer.parseInt(scanner.nextLine()) - 1;
-                if (opcion >= 0 && opcion < sucursalesHuerfanas.size()) {
-                    opcionValida = true;
-                } else {
-                    System.out.println("Error: Opción fuera de rango.");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Error: Ingrese un número válido.");
-            }
-        }
+        int opcion = LectorConsola.leerEnteroEnRango(scanner, "Seleccione el número de la sucursal: ", 1, sucursalesHuerfanas.size()) - 1;
 
         Sucursal sucursalElegida = sucursalesHuerfanas.get(opcion);
 
